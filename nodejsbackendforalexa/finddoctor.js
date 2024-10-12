@@ -31,14 +31,18 @@ const FindDoctorBySpecialty = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'doctor_specialty';
     },
     async handle(handlerInput) {
+        const attributes = handlerInput.attributesManager.getSessionAttributes();
+        var location=attributes.location;
         console.log('nagesh inside FindDoctorBySpecialty intent ');
         let specialty = handlerInput.requestEnvelope.request.intent.slots.specialty.value;
 
         var data = JSON.parse(fs.readFileSync('data.csv', 'utf8'));
         console.log('data from file is '+ JSON.stringify(data)    );
+        
         var doctor;
         for (key in data) {
-            if (data[key].specialty.toLowerCase() == specialty.toLowerCase()) {
+            if (data[key].specialty.toLowerCase() == specialty.toLowerCase() &&
+            data[key].city.toLowerCase() == location.toLowerCase()) {
                 doctor = data[key];
                 break;
             }
@@ -46,7 +50,6 @@ const FindDoctorBySpecialty = {
 
         console.log(JSON.stringify(doctor));
 
-        const attributes = handlerInput.attributesManager.getSessionAttributes();
         attributes.specialty = specialty; // Example: Saving a user's name
         handlerInput.attributesManager.setSessionAttributes(attributes);
 

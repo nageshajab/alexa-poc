@@ -43,11 +43,10 @@
                     "slots": [
                         {
                             "name": "location",
-                            "type": "AMAZON.City"
+                            "type": "AMAZON.SearchQuery"
                         }
                     ],
                     "samples": [
-                        "{location}",
                         "i am looking for doctor in {location}"
                     ]
                 },
@@ -69,6 +68,11 @@
                 {
                     "name": "specialty",
                     "values": [
+                        {
+                            "name": {
+                                "value": "Cardiologist"
+                            }
+                        },
                         {
                             "name": {
                                 "value": "Diabetic",
