@@ -15,6 +15,20 @@ async function finddoctor(location, specialty) {
     return doctor;
 }
 
-module.exports = {
-    finddoctor
+async function findmyinsurancecoverage(illness) {
+    var data = JSON.parse(fs.readFileSync('Patients_data.json', 'utf8'));
+    for (key in data[0].InsuranceCoverage) {
+        if (data[0].InsuranceCoverage[key].toLowerCase() == illness.toLowerCase()) {
+            return true;
+        }
+    };
+    return false;
 }
+
+module.exports = {
+    finddoctor,
+    findmyinsurancecoverage
+}
+
+
+
