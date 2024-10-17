@@ -4,7 +4,7 @@ const { S3PersistenceAdapter } = require('ask-sdk-s3-persistence-adapter'); // C
 const { FindDoctorByLocation, FindDoctorBySpecialty, FindDoctor } = require("./finddoctor");
 const { LogRequestInterceptor, LogResponseInterceptor } = require("./interceptors");
 const { ErrorHandler } = require('./errorhandler');
-const { LaunchRequestHandler, HelloWorldIntentHandler,HelpIntentHandler,CancelAndStopIntentHandler,SessionEndedRequestHandler,IntentReflectorHandler}=require('./otherhandlers');
+const { LaunchRequestHandler, HelpIntentHandler,CancelAndStopIntentHandler,SessionEndedRequestHandler,IntentReflectorHandler,FallbackHandler}=require('./otherhandlers');
 
 const single_slot_intent_Handler = {
     canHandle(handlerInput) {
@@ -27,11 +27,9 @@ const single_slot_intent_Handler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
-        single_slot_intent_Handler,
         FindDoctorByLocation,
         FindDoctorBySpecialty,
-        FindDoctor,
+        FallbackHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,

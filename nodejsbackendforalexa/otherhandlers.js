@@ -5,7 +5,7 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
+        const speakOutput = 'Welcome to Care Oregon. Would you like to know what all I can do for you. Just say Help.';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
@@ -16,19 +16,19 @@ const LaunchRequestHandler = {
     }
 };
 
-const HelloWorldIntentHandler = {
+const FallbackHandler = {
     canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
+      const request = handlerInput.requestEnvelope.request;
+      return request.type === 'IntentRequest'
+        && request.intent.name === 'AMAZON.FallbackIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'Hello World!';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};
+      return handlerInput.responseBuilder
+        .speak('Can you please repeat')
+        //.reprompt(FALLBACK_REPROMPT)
+        .getResponse();
+    },  
+  };
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -36,7 +36,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = 'I can help you find doctor. Just say "Please find me a doctor in your location." And I can also help you find Whether a particular illness is covered in your insurance coverage or not. For that just say "Am i covered for illness"';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -90,9 +90,9 @@ const IntentReflectorHandler = {
 
 module.exports = {
     LaunchRequestHandler,
-    HelloWorldIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler,
-    IntentReflectorHandler
+    IntentReflectorHandler,
+    FallbackHandler
 }
