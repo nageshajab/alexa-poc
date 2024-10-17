@@ -26,7 +26,7 @@
   "City": "austin",
   "Distance": 1,
   "name": "Dr Samara Oliver",
-  "Specialty": "Diabetis"
+  "Specialty": "Diabetic"
 },
 {
   "_id": {
@@ -46,7 +46,7 @@
   "City": "Detroit",
   "Distance": 20,
   "name": "Dr Karson Richardson",
-  "Specialty": "Diabetis"
+  "Specialty": "Diabetic"
 },
 {
   "_id": {
@@ -66,5 +66,5 @@
   "City": "Oregon",
   "Distance": 0,
   "name": "Peter Banitt",
-  "Specialty": "Diabetis"
+  "Specialty": "Diabetic"
 }]
