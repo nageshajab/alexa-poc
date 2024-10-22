@@ -1,6 +1,6 @@
 const Alexa = require('ask-sdk-core');
-const { finddoctor,findmyinsurancecoverage } = require("./FileHelper");
-//const { finddoctor, InsuranceCoverage } = require("./DbHelper");
+const { finddoctor, findmyinsurancecoverage } = require("./FileHelper");
+const { finddoctorfromDb, InsuranceCoveragefromDb } = require("./DbHelper");
 
 const InsuranceCoverageIntentHandler = {
     canHandle(handlerInput) {
@@ -10,18 +10,28 @@ const InsuranceCoverageIntentHandler = {
     async handle(handlerInput) {
         console.log('nagesh inside insurance_coverage intent ');
         let illness = handlerInput.requestEnvelope.request.intent.slots.illness.value;
-        var coverage = await findmyinsurancecoverage(illness);
-        if(coverage){
-            return handlerInput.responseBuilder
-            .speak(`${illness} is covered under your insurance`)
-            .withShouldEndSession(false)
-            .getResponse();
+        var coverage = false;
 
-        }else{
+        if (process.env.fromdb == 1) {
+            console.log('pulling from db');
+            coverage = await InsuranceCoveragefromDb(illness);
+            console.log('coverage returned is '+coverage);
+        } else {
+            console.log('pulling from file');
+            coverage = await findmyinsurancecoverage(illness);
+        }
+
+        if (coverage) {
             return handlerInput.responseBuilder
-            .speak(`${illness} is not covered under your insurance`)
-            .withShouldEndSession(false)
-            .getResponse();
+                .speak(`${illness} is covered under your insurance`)
+                .withShouldEndSession(false)
+                .getResponse();
+
+        } else {
+            return handlerInput.responseBuilder
+                .speak(`${illness} is not covered under your insurance`)
+                .withShouldEndSession(false)
+                .getResponse();
 
         }
     }
@@ -66,11 +76,11 @@ const FindDoctorBySpecialty = {
                 .speak(`returned doctor name is ${doctor.name}}. Hospital is located at ${doctor.Address}.}`)
                 .withShouldEndSession(false)
                 .getResponse();
-        }else{
+        } else {
             return handlerInput.responseBuilder
-            .speak(`cant find doctor with specified location and specialty`)
-            .withShouldEndSession(false)
-            .getResponse();
+                .speak(`cant find doctor with specified location and specialty`)
+                .withShouldEndSession(false)
+                .getResponse();
         }
     }
 };

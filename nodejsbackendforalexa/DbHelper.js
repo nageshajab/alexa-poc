@@ -6,7 +6,7 @@ const uri =
 
 const client = new MongoClient(uri);
 
-async function InsuranceCoverage() {
+async function InsuranceCoveragefromDb(illness) {
   try {
     await client.connect();
 
@@ -16,17 +16,25 @@ async function InsuranceCoverage() {
     const query = { name: 'Nagesh Ajab' };
     const patient = await patients.findOne(query);
 
-    //console.log(patient);
-    console.log('Your insurance does not cover ' + patient.InsuranceCoverage.includes('Cancer'));
+   // console.log(`patient returned is ${JSON.stringify(patient)}`);
+
+   var returnval=false;
+    for (key in patient.InsuranceCoverage) {
+      console.log(patient.InsuranceCoverage[key].toLowerCase());
+      if (illness.toLowerCase() == patient.InsuranceCoverage[key].toLowerCase()){
+        returnval= true;
+        break;
+      }
+    }
+    return returnval;
   } catch (e) {
     console.error(e);
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
 }
 
-async function finddoctor(location, specialty) {
+async function finddoctorfromDb(location, specialty) {
   console.log(`location is ${location} and specialty is ${specialty}`);
 
   try {
@@ -46,7 +54,7 @@ async function finddoctor(location, specialty) {
     if (Physician) {
       console.log(Physician.name + Physician.address);
     }
-    
+
     return Physician;
   } catch (e) {
     console.error(e);
@@ -58,6 +66,6 @@ async function finddoctor(location, specialty) {
 //finddoctor().catch(console.dir);
 
 module.exports = {
-  InsuranceCoverage,
-  finddoctor
+  InsuranceCoveragefromDb,
+  finddoctorfromDb
 }
