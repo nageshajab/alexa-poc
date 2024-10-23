@@ -1,7 +1,8 @@
 const Alexa = require('ask-sdk-core');
 const { S3PersistenceAdapter } = require('ask-sdk-s3-persistence-adapter'); // Correct import
 
-const {InsuranceCoverageIntentHandler, FindDoctorByLocation, FindDoctorBySpecialty, FindDoctor } = require("./finddoctor");
+const { FindDoctorByLocation, FindDoctorBySpecialty, FindDoctor } = require("./finddoctor");
+const {InsuranceCoverageIntentHandler} = require("./insuranceCoverage");
 const { LogRequestInterceptor, LogResponseInterceptor } = require("./interceptors");
 const { ErrorHandler } = require('./errorhandler');
 const { LaunchRequestHandler, HelpIntentHandler,CancelAndStopIntentHandler,SessionEndedRequestHandler,IntentReflectorHandler,FallbackHandler}=require('./otherhandlers');
@@ -12,6 +13,7 @@ const { LaunchRequestHandler, HelpIntentHandler,CancelAndStopIntentHandler,Sessi
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
+        FindDoctor,
         FindDoctorByLocation,
         FindDoctorBySpecialty,
         InsuranceCoverageIntentHandler,

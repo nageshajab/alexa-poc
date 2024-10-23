@@ -1,41 +1,6 @@
 const Alexa = require('ask-sdk-core');
-const { finddoctor, findmyinsurancecoverage } = require("./FileHelper");
-const { finddoctorfromDb, InsuranceCoveragefromDb } = require("./DbHelper");
-
-const InsuranceCoverageIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'insurance_coverage';
-    },
-    async handle(handlerInput) {
-        console.log('nagesh inside insurance_coverage intent ');
-        let illness = handlerInput.requestEnvelope.request.intent.slots.illness.value;
-        var coverage = false;
-
-        if (process.env.fromdb == 1) {
-            console.log('pulling from db');
-            coverage = await InsuranceCoveragefromDb(illness);
-            console.log('coverage returned is '+coverage);
-        } else {
-            console.log('pulling from file');
-            coverage = await findmyinsurancecoverage(illness);
-        }
-
-        if (coverage) {
-            return handlerInput.responseBuilder
-                .speak(`${illness} is covered under your insurance`)
-                .withShouldEndSession(false)
-                .getResponse();
-
-        } else {
-            return handlerInput.responseBuilder
-                .speak(`${illness} is not covered under your insurance`)
-                .withShouldEndSession(false)
-                .getResponse();
-
-        }
-    }
-};
+const { finddoctor } = require("./FileHelper");
+const { finddoctorfromDb } = require("./DbHelper");
 
 const FindDoctorByLocation = {
     canHandle(handlerInput) {
@@ -68,10 +33,18 @@ const FindDoctorBySpecialty = {
         console.log('nagesh inside FindDoctorBySpecialty intent ');
         let specialty = handlerInput.requestEnvelope.request.intent.slots.specialty.value;
 
-        var doctor = await finddoctor(location, specialty);
+        var doctor;
+        if (process.env.fromdb == 1) {
+            console.log('pulling from db');
+            doctor = await finddoctorfromDb(location, specialty);
+        } else {
+            console.log('pulling from file');
+            doctor = await finddoctor(location, specialty);
+        }
 
         if (doctor) {
             console.log(JSON.stringify(doctor));
+            clearLocationAndSpecalty(handlerInput);
             return handlerInput.responseBuilder
                 .speak(`returned doctor name is ${doctor.name}}. Hospital is located at ${doctor.Address}.}`)
                 .withShouldEndSession(false)
@@ -92,18 +65,57 @@ const FindDoctor = {
             ;
     },
     handle(handlerInput) {
-        console.log('nagesh inside finddoctor intent ');
 
-        return handlerInput.responseBuilder
-            .speak('ok, which location?')
-            .withShouldEndSession(false)
-            .getResponse();
+        var location = getLocation(handlerInput);
+
+        if (location == null) {
+            return handlerInput.responseBuilder
+                .speak('ok, which location?')
+                .withShouldEndSession(false)
+                .getResponse();
+        } else {
+            return handlerInput.responseBuilder
+                .speak('ok, which specialty?')
+                .withShouldEndSession(false)
+                .getResponse();
+        }
+
+
     }
 };
+
+function clearLocationAndSpecalty(handlerInput) {
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    attributes.location = null; // Example: Saving a user's name
+    attributes.specialty=null;
+    handlerInput.attributesManager.setSessionAttributes(attributes);
+}
+
+function getLocation(handlerInput) {
+    var location;
+
+    //first check whether location exists in session
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    location = attributes.location; // Example: Saving a user's name
+
+    //read from slot value
+    if (location == null) {
+        if (handlerInput.requestEnvelope.request.intent.slots != undefined) {
+            if (handlerInput.requestEnvelope.request.intent.slots.location != undefined) {
+                location = handlerInput.requestEnvelope.request.intent.slots.location.value;
+            }
+        }
+    }
+    return location;
+}
+
+function getSpecialty(handlerInput) {
+
+}
+
 
 module.exports = {
     FindDoctorByLocation,
     FindDoctorBySpecialty,
-    FindDoctor,
-    InsuranceCoverageIntentHandler
+    FindDoctor
 }
