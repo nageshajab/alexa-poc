@@ -1,6 +1,5 @@
 const Alexa = require('ask-sdk-core');
-const { finddoctor } = require("./FileHelper");
-const { finddoctorfromDb } = require("./DbHelper");
+const { finddoctorfromDb } = require("../HelperClasses/DbHelper");
 
 const FindDoctorByLocation = {
     canHandle(handlerInput) {
@@ -34,13 +33,9 @@ const FindDoctorBySpecialty = {
         let specialty = handlerInput.requestEnvelope.request.intent.slots.specialty.value;
 
         var doctor;
-        if (process.env.fromdb == 1) {
-            console.log('pulling from db');
-            doctor = await finddoctorfromDb(location, specialty);
-        } else {
-            console.log('pulling from file');
-            doctor = await finddoctor(location, specialty);
-        }
+
+        console.log('pulling from db');
+        doctor = await finddoctorfromDb(location, specialty);
 
         if (doctor) {
             console.log(JSON.stringify(doctor));
@@ -87,7 +82,7 @@ const FindDoctor = {
 function clearLocationAndSpecalty(handlerInput) {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     attributes.location = null; // Example: Saving a user's name
-    attributes.specialty=null;
+    attributes.specialty = null;
     handlerInput.attributesManager.setSessionAttributes(attributes);
 }
 
@@ -112,7 +107,6 @@ function getLocation(handlerInput) {
 function getSpecialty(handlerInput) {
 
 }
-
 
 module.exports = {
     FindDoctorByLocation,

@@ -1,11 +1,12 @@
 const Alexa = require('ask-sdk-core');
 const { S3PersistenceAdapter } = require('ask-sdk-s3-persistence-adapter'); // Correct import
 
-const { FindDoctorByLocation, FindDoctorBySpecialty, FindDoctor } = require("./finddoctor");
-const {InsuranceCoverageIntentHandler} = require("./insuranceCoverage");
-const { LogRequestInterceptor, LogResponseInterceptor } = require("./interceptors");
-const { ErrorHandler } = require('./errorhandler');
-const { LaunchRequestHandler, HelpIntentHandler,CancelAndStopIntentHandler,SessionEndedRequestHandler,IntentReflectorHandler,FallbackHandler}=require('./otherhandlers');
+const { FindDoctorByLocation, FindDoctorBySpecialty, FindDoctor } = require("./intent_handlers/finddoctor")
+const { InsuranceCoverageIntentHandler } = require("./intent_handlers/insuranceCoverage");
+const {TherapyVisitedIntentHandler}=require("./intent_handlers/therapy");
+const { LogRequestInterceptor, LogResponseInterceptor } = require("./intent_handlers/interceptors");
+const { ErrorHandler } = require('./intent_handlers/errorhandler');
+const { LaunchRequestHandler, HelpIntentHandler, CancelAndStopIntentHandler, SessionEndedRequestHandler, IntentReflectorHandler, FallbackHandler } = require('./intent_handlers/otherhandlers');
 
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
@@ -17,6 +18,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         FindDoctorByLocation,
         FindDoctorBySpecialty,
         InsuranceCoverageIntentHandler,
+        TherapyVisitedIntentHandler,
         FallbackHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,

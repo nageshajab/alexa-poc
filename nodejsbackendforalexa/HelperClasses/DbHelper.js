@@ -1,10 +1,32 @@
 const { MongoClient } = require("mongodb");
+require('dotenv').config();
 
+console.log(process.env.mongodbconnstring);
 // Replace the uri string with your connection string.
-const uri =
-  "mongodb+srv://nageshajab:NDDLththoSBKd5yH@cluster0.h7fiv.mongodb.net/";
+const uri = process.env.mongodbconnstring;
 
 const client = new MongoClient(uri);
+
+async function therapyVisitsRemaining() {
+  try {
+    await client.connect();
+
+    const database = client.db('taskmanager');
+    const patients = database.collection('Patients');
+
+    const query = { name: 'Nagesh Ajab' };
+    const patient = await patients.findOne(query);
+
+    var msg = `you have ${patient.therapyVisitsRemaining} thearapy visits remaining, out of maximum benifit of ${patient.totalTherapyVisits}`;
+    console.log(msg);
+
+    return msg;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
 
 async function InsuranceCoveragefromDb(illness) {
   try {
@@ -16,13 +38,13 @@ async function InsuranceCoveragefromDb(illness) {
     const query = { name: 'Nagesh Ajab' };
     const patient = await patients.findOne(query);
 
-   // console.log(`patient returned is ${JSON.stringify(patient)}`);
+    // console.log(`patient returned is ${JSON.stringify(patient)}`);
 
-   var returnval=false;
+    var returnval = false;
     for (key in patient.InsuranceCoverage) {
       console.log(patient.InsuranceCoverage[key].toLowerCase());
-      if (illness.toLowerCase() == patient.InsuranceCoverage[key].toLowerCase()){
-        returnval= true;
+      if (illness.toLowerCase() == patient.InsuranceCoverage[key].toLowerCase()) {
+        returnval = true;
         break;
       }
     }
@@ -63,9 +85,9 @@ async function finddoctorfromDb(location, specialty) {
     await client.close();
   }
 }
-//finddoctor().catch(console.dir);
 
 module.exports = {
+  therapyVisitsRemaining,
   InsuranceCoveragefromDb,
   finddoctorfromDb
 }

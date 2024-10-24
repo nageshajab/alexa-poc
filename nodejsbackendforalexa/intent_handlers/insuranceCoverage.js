@@ -1,6 +1,5 @@
 const Alexa = require('ask-sdk-core');
-const { InsuranceCoveragefromDb } = require("./DbHelper");
-const { findmyinsurancecoverage } = require("./FileHelper");
+const { InsuranceCoveragefromDb } = require("../HelperClasses/DbHelper");
 
 const InsuranceCoverageIntentHandler = {
     canHandle(handlerInput) {
@@ -12,14 +11,8 @@ const InsuranceCoverageIntentHandler = {
         let illness = handlerInput.requestEnvelope.request.intent.slots.illness.value;
         var coverage = false;
 
-        if (process.env.fromdb == 1) {
-            console.log('pulling from db');
-            coverage = await InsuranceCoveragefromDb(illness);
-            console.log('coverage returned is '+coverage);
-        } else {
-            console.log('pulling from file');
-            coverage = await findmyinsurancecoverage(illness);
-        }
+        coverage = await InsuranceCoveragefromDb(illness);
+        console.log('coverage returned is ' + coverage);
 
         if (coverage) {
             return handlerInput.responseBuilder
@@ -37,6 +30,6 @@ const InsuranceCoverageIntentHandler = {
     }
 };
 
-module.exports={
+module.exports = {
     InsuranceCoverageIntentHandler
 };
