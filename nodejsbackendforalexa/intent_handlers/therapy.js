@@ -1,5 +1,5 @@
 const Alexa = require('ask-sdk-core');
-const { therapyVisitsRemaining } = require("../HelperClasses/DbHelper");
+const { callApi } = require("../HelperClasses/ApiHelper");
 
 const TherapyVisitedIntentHandler = {
     canHandle(handlerInput) {
@@ -9,7 +9,7 @@ const TherapyVisitedIntentHandler = {
     async handle(handlerInput) {
         console.log('nagesh inside therapy_visited intent ');
 
-        var msg = await therapyVisitsRemaining();
+        var msg = await callApi('https://taskmanagerservice.azurewebsites.net/api/therapyvisitRemaining');
 
         return handlerInput.responseBuilder
             .speak(`${msg}`)

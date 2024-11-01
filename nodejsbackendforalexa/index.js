@@ -7,6 +7,7 @@ const {TherapyVisitedIntentHandler}=require("./intent_handlers/therapy");
 const { LogRequestInterceptor, LogResponseInterceptor } = require("./intent_handlers/interceptors");
 const { ErrorHandler } = require('./intent_handlers/errorhandler');
 const { LaunchRequestHandler, HelpIntentHandler, CancelAndStopIntentHandler, SessionEndedRequestHandler, IntentReflectorHandler, FallbackHandler } = require('./intent_handlers/otherhandlers');
+const { city_of_birth, mother_maiden_name } =require('./intent_handlers/authorize');
 
 // The SkillBuilder acts as the entry point for your skill, routing all request and response
 // payloads to the handlers above. Make sure any new handlers or interceptors you've
@@ -17,7 +18,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         FindDoctor,
         FindDoctorByLocation,
         FindDoctorBySpecialty,
-        InsuranceCoverageIntentHandler,
+        city_of_birth, mother_maiden_name, InsuranceCoverageIntentHandler,
         TherapyVisitedIntentHandler,
         FallbackHandler,
         HelpIntentHandler,
