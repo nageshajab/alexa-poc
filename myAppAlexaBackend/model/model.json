@@ -1,0 +1,114 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "care oregon",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "finddoctor",
+                    "slots": [],
+                    "samples": [
+                        "find doctor near me"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "HelloWorldIntent",
+                    "slots": [],
+                    "samples": [
+                        "hi",
+                        "hello"
+                    ]
+                },
+                {
+                    "name": "doctor_location",
+                    "slots": [
+                        {
+                            "name": "location",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "i am looking for doctor in {location}"
+                    ]
+                },
+                {
+                    "name": "doctor_specialty",
+                    "slots": [
+                        {
+                            "name": "specialty",
+                            "type": "specialty"
+                        }
+                    ],
+                    "samples": [
+                        "I am looking for {specialty} doctor",
+                        "{specialty}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "specialty",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Cardiologist"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Diabetic",
+                                "synonyms": [
+                                    "diabetic"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "homeopath",
+                                "synonyms": [
+                                    "Homeopath"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "dentist",
+                                "synonyms": [
+                                    "Dentist"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "orthopedics",
+                                "synonyms": [
+                                    "ortho",
+                                    "Orthopedics"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
