@@ -1,72 +1,84 @@
-const Alexa = require('ask-sdk-core');
+const Alexa = require("ask-sdk-core");
 
 const LaunchRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Welcome to Care Oregon. Would you like to know what all I can do for you. Just say Help.';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            //    .addDelegateDirective({
-            //         name: 'HelloWorldIntent'
-            //     })
-            .getResponse();
-    }
+  canHandle(handlerInput) {
+    return (
+      Alexa.getRequestType(handlerInput.requestEnvelope) === "LaunchRequest"
+    );
+  },
+  handle(handlerInput) {
+    const speakOutput =
+      "Welcome to Care Oregon. Would you like to know what all I can do for you. Just say Help.";
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .reprompt(speakOutput)
+      .getResponse();
+  },
 };
 
 const FallbackHandler = {
-    canHandle(handlerInput) {
-      const request = handlerInput.requestEnvelope.request;
-      return request.type === 'IntentRequest'
-        && request.intent.name === 'AMAZON.FallbackIntent';
-    },
-    handle(handlerInput) {
-      return handlerInput.responseBuilder
-        .speak('Can you please repeat')
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return (
+      request.type === "IntentRequest" &&
+      request.intent.name === "AMAZON.FallbackIntent"
+    );
+  },
+  handle(handlerInput) {
+    return (
+      handlerInput.responseBuilder
+        .speak("Can you please repeat")
         //.reprompt(FALLBACK_REPROMPT)
-        .getResponse();
-    },  
-  };
+        .getResponse()
+    );
+  },
+};
 
 const HelpIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
-    },
-    handle(handlerInput) {
-        const speakOutput = 'I can help you find doctor. Just say "Please find me a doctor in your location." And I can also help you find Whether a particular illness is covered in your insurance coverage or not. For that just say "Am i covered for illness"';
+  canHandle(handlerInput) {
+    return (
+      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      Alexa.getIntentName(handlerInput.requestEnvelope) === "AMAZON.HelpIntent"
+    );
+  },
+  handle(handlerInput) {
+    const speakOutput =
+      'I can help you find doctor. Just say "Please find me a doctor in your location." And I can also help you find Whether a particular illness is covered in your insurance coverage or not. For that just say "Am i covered for illness"';
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
-            .getResponse();
-    }
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .reprompt(speakOutput)
+      .getResponse();
+  },
 };
 
 const CancelAndStopIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && (Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.CancelIntent'
-                || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
-    },
-    handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
+  canHandle(handlerInput) {
+    return (
+      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest" &&
+      (Alexa.getIntentName(handlerInput.requestEnvelope) ===
+        "AMAZON.CancelIntent" ||
+        Alexa.getIntentName(handlerInput.requestEnvelope) ===
+          "AMAZON.StopIntent")
+    );
+  },
+  handle(handlerInput) {
+    const speakOutput = "Goodbye!";
+    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
+  },
 };
 
 const SessionEndedRequestHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'SessionEndedRequest';
-    },
-    handle(handlerInput) {
-        // Any cleanup logic goes here.
-        return handlerInput.responseBuilder.getResponse();
-    }
+  canHandle(handlerInput) {
+    return (
+      Alexa.getRequestType(handlerInput.requestEnvelope) ===
+      "SessionEndedRequest"
+    );
+  },
+  handle(handlerInput) {
+    // Any cleanup logic goes here.
+    return handlerInput.responseBuilder.getResponse();
+  },
 };
 
 // The intent reflector is used for interaction model testing and debugging.
@@ -74,25 +86,29 @@ const SessionEndedRequestHandler = {
 // for your intents by defining them above, then also adding them to the request
 // handler chain below.
 const IntentReflectorHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest';
-    },
-    handle(handlerInput) {
-        const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = `You just triggered ${intentName}`;
+  canHandle(handlerInput) {
+    return (
+      Alexa.getRequestType(handlerInput.requestEnvelope) === "IntentRequest"
+    );
+  },
+  handle(handlerInput) {
+    const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
+    const speakOutput = `You just triggered ${intentName}`;
 
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
+    return (
+      handlerInput.responseBuilder
+        .speak(speakOutput)
+        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+        .getResponse()
+    );
+  },
 };
 
 module.exports = {
-    LaunchRequestHandler,
-    HelpIntentHandler,
-    CancelAndStopIntentHandler,
-    SessionEndedRequestHandler,
-    IntentReflectorHandler,
-    FallbackHandler
-}
+  LaunchRequestHandler,
+  HelpIntentHandler,
+  CancelAndStopIntentHandler,
+  SessionEndedRequestHandler,
+  IntentReflectorHandler,
+  FallbackHandler,
+};
