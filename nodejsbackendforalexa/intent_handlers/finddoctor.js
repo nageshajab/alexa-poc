@@ -51,7 +51,7 @@ const FindDoctorBySpecialty = {
       clearLocationAndSpecalty(handlerInput);
       return handlerInput.responseBuilder
         .speak(
-          `returned doctor name is ${doctor.name}}. Hospital is located at ${doctor.Address}.}`
+          `returned doctor name is ${doctor.Name}. Hospital is located at ${doctor.City}.`
         )
         .withShouldEndSession(false)
         .getResponse();

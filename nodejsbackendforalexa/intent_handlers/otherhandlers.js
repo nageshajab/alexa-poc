@@ -25,12 +25,10 @@ const FallbackHandler = {
     );
   },
   handle(handlerInput) {
-    return (
-      handlerInput.responseBuilder
-        .speak("Can you please repeat")
-        //.reprompt(FALLBACK_REPROMPT)
-        .getResponse()
-    );
+    return handlerInput.responseBuilder
+      .speak("Can you please repeat")
+      .reprompt("do u want to continue")
+      .getResponse();
   },
 };
 
@@ -95,12 +93,10 @@ const IntentReflectorHandler = {
     const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
     const speakOutput = `You just triggered ${intentName}`;
 
-    return (
-      handlerInput.responseBuilder
-        .speak(speakOutput)
-        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        .getResponse()
-    );
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .reprompt("do u want to continue")
+      .getResponse();
   },
 };
 

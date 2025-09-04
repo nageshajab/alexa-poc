@@ -45,7 +45,8 @@ async function finddoctor(city, specialty) {
   );
 
   if (matchingDoctors.length > 0) {
-    return matchingDoctors;
+    console.log("found matching doctor " + JSON.stringify(matchingDoctors[0]));
+    return matchingDoctors[0];
   } else {
     return `No doctors found in ${city} with specialty "${specialty}".`;
   }
